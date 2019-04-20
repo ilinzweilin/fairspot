@@ -12,7 +12,7 @@ export default class NetworksList extends Component {
       networks: this.props.networks
   }
   state = {
-      connected: true
+      connected: false
   }
     
   logOn() {}
@@ -25,7 +25,10 @@ export default class NetworksList extends Component {
       return (
         <Grid item xs={12} md={6}>
           <Typography variant="h6" className="networksListTitle">
-          Networks List
+          Connect to a spot
+          </Typography>
+          <Typography >
+          Pay 1 ETC / 100 Kbyte 
           </Typography>
           <div className="networksList">
             {
