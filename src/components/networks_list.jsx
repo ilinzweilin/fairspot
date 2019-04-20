@@ -29,7 +29,7 @@ export default class NetworksList extends Component {
           Spots
           </Typography>
           <Typography className="paymentInfo">
-          Pay 1 ETC / 100 Kbyte 
+          Pay .01 ETC / 100 Kbyte 
           </Typography>
           <div className="networkList">
             {

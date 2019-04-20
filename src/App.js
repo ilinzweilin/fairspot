@@ -43,14 +43,14 @@ class App extends Component {
   }
 
   getTokenBalance = async () => {
-    const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'))
-    web3.defaultAccount = '0xAba205cC413435B646463dCEeaDc1492c184BF3d'
 
-    const weiBalance = await web3.eth.getBalance(web3.eth.defaultAccount)
+    const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'))
+    const account = await web3.eth.getAccounts()
+    const weiBalance = await web3.eth.getBalance(account[0])
     const ethBalance = web3.utils.fromWei(weiBalance)
     const balance = (ethBalance/0.005449266175824176).toFixed(3)
-    console.log("balance", web3.eth.defaultAccount, balance)
     this.setState({ balance })
+
   }
 
   loadData = async () => {
