@@ -11,11 +11,12 @@ export default class NetworksList extends Component {
 
   props = {
       networks: [],
+      partners: [],
       connectedNetwork: undefined,
       connectToNetwork: {},
       disconnectFromNetwork: {},
       kBytesConsumed: 0,
-      moneySpoent: 0
+      moneySpent: 0
   }
   state = {
       connected: false
@@ -34,8 +35,8 @@ export default class NetworksList extends Component {
           <div className="networkList">
             {
               networks.map((network, i) => (
-                <ListItem>
-                  <ListItemText primary={network.ssid}/> 
+                <ListItem key={i}>
+                  <ListItemText primary={network.ssid} /> 
                   
                   {
                     (connectedNetwork && connectedNetwork === network.mac) && (

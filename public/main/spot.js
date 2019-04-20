@@ -6,7 +6,7 @@ let {
   closePaymentChannel,
   addPaymentInformation,
   submitPayment
-} = require('./payment')
+} = require('../../src/helpers/payment')
 
 // --> charge for 100KB
 const chunkSize = 100000,
