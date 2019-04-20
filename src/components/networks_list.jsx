@@ -56,16 +56,22 @@ export default class NetworksList extends Component {
   }
 
   showDataStats() {
-    
+
   }
 
   render() {
-
     if (!this.state.connected) {
-        showNetworksList()
+        return (
+           <div>
+               { this.showNetworksList() }
+           </div> 
+        )
     } else {
-        showDataStats()
+        return (
+            <div>
+                { this.showDataStats() }
+            </div> 
+         )
     }
-
   }
 }

@@ -3,29 +3,26 @@ import Button from '@material-ui/core/Button'
 import Web3 from 'web3'
 import abi from 'human-standard-collectible-abi'
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
-
-let collectible = web3.eth.contract(abi).at(contractAddress)
-
-
-export default class ChannelButton extends Component {
+export default class TokenBalance extends Component {
 
     
 
 
-  openChannel() {
-    // PUT /api/(version)/channels
-    // "partner_address": "0x61C808D82A3Ac53231750daDc13c777b59310bD9",
-    // "token_address": "0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8",
-    // "total_deposit": 35000000,
-    // "settle_timeout": 500
-    // Open channel API here
+  getTokenBalance() {
+    const addr = web3.eth.accounts[0]
+    const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+    const collectible = web3.eth.contract(abi).at(0x396764f15ed1467883A9a5B7D42AcFb788CD1826)
+
+    collectible.balanceOf.call(addr, function (err, bal) {
+        if (err) { console.error(err) }
+        console.log('balance is ' + bal.toString(10))
+      })
   }
 
   render() {
     return(
-      <Button variant="contained" color="primary" onClick={this.openChannel}>
-      Open Channel
+      <Button variant="contained" color="primary" onClick={this.getTokenBalance}>
+      Get Token Balance
       </Button>
     )
   }
