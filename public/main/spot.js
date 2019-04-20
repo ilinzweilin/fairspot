@@ -38,10 +38,10 @@ async function disconnectFromSpot() {
 }
 
 async function findSpots() {
-  const networks = await WiFiControl.scanForWiFi()
+  const data = await WiFiControl.scanForWiFi()
   // HACK: turn Wifi access points into spots
-  addPaymentInformation(networks)
-  console.log("networks", networks)
+  addPaymentInformation(data.networks)
+  console.log("networks", data.networks)
   return networks
 }
 

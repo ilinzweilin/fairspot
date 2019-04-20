@@ -5,13 +5,29 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export default class NetworkToggle extends Component {
 
+    props = {
+        disabled: false,
+        networkId: undefined,
+        connectToNetwork: {},
+        disconnectFromNetwork: {}
+    }
+
     state = {
         open: false,
         hidden: false,
-      };
+      }
     
-
       handleToggle = (event, hidden) => {
+        const { networkId, disconnectFromNetwork, connectToNetwork } = this.props
+        if (hidden) {
+          console.log("hidden", networkId)
+          connectToNetwork(networkId)
+
+        } else {
+
+          console.log("not hidden", networkId)
+          disconnectFromNetwork()
+        }
         this.setState(state => ({
             hidden,
             open: hidden ? false : state.open,
@@ -21,6 +37,8 @@ export default class NetworkToggle extends Component {
 
   render() {
       const { hidden } = this.state
+      const { disabled } = this.props
+      console.log('moin', disabled)
     return(
         <FormControlLabel
             control= {
@@ -29,6 +47,7 @@ export default class NetworkToggle extends Component {
         onChange={this.handleToggle}
         value="hidden"
         color="primary"
+        disabled={disabled}
         /> 
             }
         />

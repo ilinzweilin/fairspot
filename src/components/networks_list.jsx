@@ -5,49 +5,50 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import ListItemText from "@material-ui/core/ListItemText"
 import NetworkToggle from "./toggle_on"
+import Button from '@material-ui/core/Button'
 
 export default class NetworksList extends Component {
 
   props = {
-      networks: this.props.networks
+      networks: [],
+      connectedNetwork: undefined,
+      connectToNetwork: {},
+      disconnectFromNetwork: {}
   }
   state = {
       connected: false
   }
-    
-  logOn() {}
-
-  logOff() {}
 
   showNetworksList() {
-    const { networks } = this.props
-    console.log('network_list', networks)
+    const { networks, connectedNetwork, connectToNetwork, disconnectFromNetwork } = this.props
       return (
-        <Grid item xs={12} md={6}>
+        <div className="mainContent" >
           <Typography variant="h6" className="networksListTitle">
-          Connect to a spot
+          Spots
           </Typography>
-          <Typography >
+          <Typography className="paymentInfo">
           Pay 1 ETC / 100 Kbyte 
           </Typography>
-          <div className="networksList">
+          <div className="networkList">
             {
               networks.map((network, i) => (
                 <ListItem>
-                  <ListItemText primary={network} />
+                  <ListItemText primary={network.ssid} />
                   <ListItemSecondaryAction>
-                    <NetworkToggle />
+                    <NetworkToggle connectToNetwork = {connectToNetwork} disconnectFromNetwork = {disconnectFromNetwork} networkId={network.mac} disabled={connectedNetwork && connectedNetwork !== network.mac}/>
                   </ListItemSecondaryAction>
                 </ListItem>
               ))
             }
           </div>
-        </Grid>
+        </div>
       )
   }
-
   showDataStats() {
-
+    return ( <Button  color="primary">
+       Connected
+      </Button>
+    )
   }
 
   render() {
