@@ -1,5 +1,8 @@
 let axios = require('axios')
 
+const tokenAddress = "partner"
+const partnerAddress = "token"
+
 async function openPaymentChannel(partnerAddress, tokenAddress, totalDeposit, settleTimeout) {
   const req = axios.put(
     'http://localhost:5001/api/v1/channels',
@@ -40,7 +43,14 @@ async function submitPayment(partnerAddress, tokenAddress, amount, identifier) {
   console.log("payment sent", req)
 }
 
+function addPaymentInformation (elements) {
+  objects.array.forEach( element => {
+    element.tokenAddress = tokenAddress
+    elemnt.partnerAddress = partnerAddress  
+  })
+}
 module.exports = {
+  addPaymentInformation,
   openPaymentChannel,
   closePaymentChannel,
   submitPayment
