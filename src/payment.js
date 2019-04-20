@@ -44,9 +44,9 @@ async function submitPayment(partnerAddress, tokenAddress, amount, identifier) {
 }
 
 function addPaymentInformation (elements) {
-  objects.array.forEach( element => {
+  elements.forEach( element => {
     element.tokenAddress = tokenAddress
-    elemnt.partnerAddress = partnerAddress  
+    element.partnerAddress = partnerAddress  
   })
 }
 module.exports = {
