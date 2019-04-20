@@ -11,47 +11,28 @@ export default class NetworksList extends Component {
     props = {
         networks: this.props.networks
     }
-
-    state = {
-        dense: false,
-        secondary: false,
-      };
     
   logOn() {}
 
   logOff() {}
 
-  generate(element) {
-    return this.props.networks.map(value =>
-      React.cloneElement(element, {
-        key: value,
-      }),
-    );
-  }
-
   render() {
 
-    const { dense, secondary } = this.state;
     const { networks } = this.props
-    const network = networks[0]
-
+    console.log('network_list', networks)
     return (
       <Grid item xs={12} md={6}>
         <Typography variant="h6" className="networksListTitle">
         Networks List
         </Typography>
         <div className="networksList">
-          <List dense={dense}>
-            {this.generate(
+          {
+            networks.map((network, i) => (
               <ListItem>
-                <ListItemText
-                  primary={network}
-                  secondary={secondary ? "Secondary text" : null}
-                />
-                <ListItemSecondaryAction></ListItemSecondaryAction>
+               <ListItemText primary={network} />
               </ListItem>
-            )}
-          </List>
+            ))
+          }
         </div>
       </Grid>
     );
