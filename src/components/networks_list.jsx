@@ -5,6 +5,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
+import NetworkToggle from "./toggle_on";
 
 export default class NetworksList extends Component {
 
@@ -46,7 +47,9 @@ export default class NetworksList extends Component {
                   primary="Single-line item"
                   secondary={secondary ? "Secondary text" : null}
                 />
-                <ListItemSecondaryAction></ListItemSecondaryAction>
+                <ListItemSecondaryAction>
+                    <NetworkToggle />
+                </ListItemSecondaryAction>
               </ListItem>
             )}
           </List>
