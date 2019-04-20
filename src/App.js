@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import './App.css'
-import ChannelButton from './components/open_channel.jsx'
 import NetworksList from './components/networks_list'
-import TokenBalance from './components/data_stats';
 import BalanceButton from './components/balance_button'
+import Web3 from 'web3'
 
 /*const {
   connectToSpot,
@@ -34,6 +33,18 @@ class App extends Component {
 
   componentDidMount () {
     this.loadData()
+    this.getTokenBalance()
+  }
+
+  getTokenBalance = async () => {
+    const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'))
+    web3.defaultAccount = '0xAba205cC413435B646463dCEeaDc1492c184BF3d'
+
+    const weiBalance = await web3.eth.getBalance(web3.eth.defaultAccount)
+    const ethBalance = web3.utils.fromWei(weiBalance)
+    const balance = (ethBalance/0.005449266175824176).toFixed(3)
+    console.log("balance", web3.eth.defaultAccount, balance)
+    this.setState({ balance })
   }
 
   loadData = async () => {
