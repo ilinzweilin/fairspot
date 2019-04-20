@@ -42,7 +42,7 @@ async function findSpots() {
   // HACK: turn Wifi access points into spots
   addPaymentInformation(data.networks)
   console.log("networks", data.networks)
-  return networks
+  return data.networks
 }
 
 
