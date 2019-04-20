@@ -53,13 +53,17 @@ class App extends Component {
     */
   }
 
+  loadNetworks = () =>  {
+    return (
+      <NetworksList networks={ this.state.networks }/>
+    )
+  }
 
   render() {
-    const { networks } = this.state
     return (
       <div className="App">
         <header className="App-header">
-          {networks && <NetworksList networks={ networks }/>}
+        { this.loadNetworks() }
           <ChannelButton />
         </header>
       </div>
