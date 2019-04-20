@@ -22,12 +22,17 @@ class App extends Component {
     this.setState({networks})
   }
 
+  loadNetworks = () =>  {
+    return (
+      <NetworksList networks={ this.state.networks }/>
+    )
+  }
+
   render() {
-    const { networks } = this.state
     return (
       <div className="App">
         <header className="App-header">
-          {networks && <NetworksList networks={ networks }/>}
+        { loadNetworks() }
           <ChannelButton />
         </header>
       </div>
