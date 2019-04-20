@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import './App.css'
 import ChannelButton from './components/open_channel.jsx'
 import NetworksList from './components/networks_list'
-import TokenBalance from './components/data_stats';
+import TokenBalance from './components/data_stats'
 import BalanceButton from './components/balance_button'
+import ConnectedSnackBar from './components/connected_snackbar'
+import DisconnectedSnackBar from './components/disconnected_snackbar'
 
 /*const {
   connectToSpot,
@@ -28,9 +30,12 @@ class App extends Component {
     networks: [],
     account: undefined,
     connectedNetwork: undefined,
-    balance: 0
+    balance: 0,
+    connectedSnackBarOpen: false,
+    disconnectedSnackBarOpen: false,
+    kBytesConsumed:0,
+    moneySpent:0
   }
-
 
   componentDidMount () {
     this.loadData()
@@ -254,18 +259,40 @@ class App extends Component {
 
   loadNetworks = () =>  {
     return (
-      <NetworksList networks={ this.state.networks } connectToNetwork = {this.connectToNetwork} disconnectFromNetwork = {this.disconnectFromNetwork} connectedNetwork = { this.state.connectedNetwork} />
+      <NetworksList kBytesConsumed = {this.state.kBytesConsumed} moneySpent = {this.state.moneySpent} networks={ this.state.networks } connectToNetwork = {this.connectToNetwork} disconnectFromNetwork = {this.disconnectFromNetwork} connectedNetwork = { this.state.connectedNetwork} />
     )
   }
 
 connectToNetwork = (networkId) => {
-  this.setState({ connectedNetwork : networkId })
+  this.setState({ 
+    connectedNetwork : networkId,
+    connectedSnackBarOpen : true,
+    disconnectedSnackBarOpen : false,
+  })
+  this.hideConnectedSnackBar()
 }
 
 disconnectFromNetwork = () => {
-  this.setState({ connectedNetwork : undefined })
+  this.setState({ 
+    connectedNetwork : undefined,
+    connectedSnackBarOpen : false,
+    disconnectedSnackBarOpen : true,
+    kBytesConsumed: 0,
+    moneySpoent: 0 })
+  this.hideDisconnectedSnackBar()
 }
 
+hideConnectedSnackBar = () => {
+  setTimeout(() => { 
+    this.setState ({ connectedSnackBarOpen : false })
+  }, 3000)  
+}
+
+hideDisconnectedSnackBar = () => {
+  setTimeout(() => { 
+    this.setState ({ disconnectedSnackBarOpen : false })
+  }, 3000)  
+}
 
   render() {
     return (
@@ -273,8 +300,11 @@ disconnectFromNetwork = () => {
 
         <header className="App-header">
         { this.loadNetworks() }
+        <ConnectedSnackBar open = {this.state.connectedSnackBarOpen}/>
+        <DisconnectedSnackBar open = {this.state.disconnectedSnackBarOpen}/>
         </header>
-        <BalanceButton balance= { this.state.balance}/>
+        <BalanceButton balance = { this.state.balance}/>
+  
       </div>
     )
   }

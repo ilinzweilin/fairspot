@@ -13,14 +13,16 @@ export default class NetworksList extends Component {
       networks: [],
       connectedNetwork: undefined,
       connectToNetwork: {},
-      disconnectFromNetwork: {}
+      disconnectFromNetwork: {},
+      kBytesConsumed: 0,
+      moneySpoent: 0
   }
   state = {
       connected: false
   }
 
   showNetworksList() {
-    const { networks, connectedNetwork, connectToNetwork, disconnectFromNetwork } = this.props
+    const { networks, connectedNetwork, connectToNetwork, disconnectFromNetwork, kBytesConsumed } = this.props
       return (
         <div className="mainContent" >
           <Typography variant="h6" className="networksListTitle">
@@ -33,7 +35,16 @@ export default class NetworksList extends Component {
             {
               networks.map((network, i) => (
                 <ListItem>
-                  <ListItemText primary={network.ssid} />
+                  <ListItemText primary={network.ssid}/> 
+                  
+                  {
+                    (connectedNetwork && connectedNetwork === network.mac) && (
+                    <Typography className ="dataConsumption" primary={`${kBytesConsumed} kBytes`}> 
+                    {`${kBytesConsumed} kBytes`}
+                    </Typography>
+                    )
+                  }
+
                   <ListItemSecondaryAction>
                     <NetworkToggle connectToNetwork = {connectToNetwork} disconnectFromNetwork = {disconnectFromNetwork} networkId={network.mac} disabled={connectedNetwork && connectedNetwork !== network.mac}/>
                   </ListItemSecondaryAction>

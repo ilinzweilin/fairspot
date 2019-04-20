@@ -38,7 +38,6 @@ export default class NetworkToggle extends Component {
   render() {
       const { hidden } = this.state
       const { disabled } = this.props
-      console.log('moin', disabled)
     return(
         <FormControlLabel
             control= {
