@@ -1,22 +1,16 @@
 import React, { Component } from 'react'
 import Button from '@material-ui/core/Button'
 import Web3 from 'web3'
-import abi from 'human-standard-collectible-abi'
 
 export default class TokenBalance extends Component {
 
-    
+  async getTokenBalance() {
+    const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'))
+    web3.defaultAccount = '0xAba205cC413435B646463dCEeaDc1492c184BF3d'
 
-
-  getTokenBalance() {
-    const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
-    const addr = web3.eth.accounts[0]
-    const collectible = web3.eth.contract(abi).at(0x396764f15ed1467883A9a5B7D42AcFb788CD1826)
-
-    collectible.balanceOf.call(addr, function (err, bal) {
-        if (err) { console.error(err) }
-        console.log('balance is ' + bal.toString(10))
-      })
+    const weiBalance = await web3.eth.getBalance(web3.eth.defaultAccount)
+    const balance = web3.utils.fromWei(weiBalance)
+    // set the state of the balance component to this
   }
 
   render() {
