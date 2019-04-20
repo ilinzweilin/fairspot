@@ -21,7 +21,6 @@ export default class NetworksList extends Component {
 
   showNetworksList() {
     const { networks } = this.props
-    console.log('network_list', networks)
       return (
         <Grid item xs={12} md={6}>
           <Typography variant="h6" className="networksListTitle">
