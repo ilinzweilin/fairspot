@@ -4,6 +4,7 @@ let { promisify } = require('util')
 let {
   openPaymentChannel,
   closePaymentChannel,
+  addPaymentInformation,
   submitPayment
 } = require('./payment')
 
@@ -38,8 +39,12 @@ async function disconnectFromSpot() {
 
 async function findSpots() {
   const networks = await WiFiControl.scanForWiFi()
+  // HACK: turn Wifi access points into spots
+  addPaymentInformation(networks)
+  console.log("networks", networks)
   return networks
 }
+
 
 function startSpotting() {
   pcap_session.on('packet', async function (raw_packet) {

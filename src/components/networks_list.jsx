@@ -33,6 +33,8 @@ export default class NetworksList extends Component {
   render() {
 
     const { dense, secondary } = this.state;
+    const { networks } = this.props
+    const network = networks[0]
 
     return (
       <Grid item xs={12} md={6}>
@@ -44,7 +46,7 @@ export default class NetworksList extends Component {
             {this.generate(
               <ListItem>
                 <ListItemText
-                  primary="Single-line item"
+                  primary={network}
                   secondary={secondary ? "Secondary text" : null}
                 />
                 <ListItemSecondaryAction>
