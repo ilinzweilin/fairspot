@@ -9,8 +9,8 @@ export default class TokenBalance extends Component {
 
 
   getTokenBalance() {
-    const addr = web3.eth.accounts[0]
     const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+    const addr = web3.eth.accounts[0]
     const collectible = web3.eth.contract(abi).at(0x396764f15ed1467883A9a5B7D42AcFb788CD1826)
 
     collectible.balanceOf.call(addr, function (err, bal) {

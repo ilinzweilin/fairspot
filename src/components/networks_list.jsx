@@ -11,6 +11,9 @@ export default class NetworksList extends Component {
   props = {
       networks: this.props.networks
   }
+  state = {
+      connected: true
+  }
     
   logOn() {}
 
