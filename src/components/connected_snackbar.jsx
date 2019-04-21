@@ -11,7 +11,7 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
 
-const variantIcon = {
+const letiantIcon = {
   success: CheckCircleIcon,
   warning: WarningIcon,
   error: ErrorIcon,
@@ -35,7 +35,7 @@ const styles1 = theme => ({
   icon: {
     fontSize: 20,
   },
-  iconVariant: {
+  iconletiant: {
     opacity: 0.9,
     marginRight: theme.spacing.unit,
   },
@@ -46,16 +46,16 @@ const styles1 = theme => ({
 });
 
 function MySnackbarContent(props) {
-  const { classes, className, message, onClose, variant, ...other } = props;
-  const Icon = variantIcon[variant];
+  const { classes, className, message, onClose, letiant, ...other } = props;
+  const Icon = letiantIcon[letiant];
 
   return (
     <SnackbarContent
-      className={classNames(classes[variant], className)}
+      className={classNames(classes[letiant], className)}
       aria-describedby="client-snackbar"
       message={
         <span id="client-snackbar" className={classes.message}>
-          <Icon className={classNames(classes.icon, classes.iconVariant)} />
+          <Icon className={classNames(classes.icon, classes.iconletiant)} />
           {message}
         </span>
       }
@@ -69,7 +69,7 @@ MySnackbarContent.propTypes = {
   className: PropTypes.string,
   message: PropTypes.node,
   onClose: PropTypes.func,
-  variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
+  letiant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
 };
 
 const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
@@ -102,7 +102,7 @@ class ConnectedSnackBar extends React.Component {
         >
           <MySnackbarContentWrapper
             onClose={this.handleClose}
-            variant="success"
+            letiant="success"
             message="Connected"
           />
         </Snackbar>

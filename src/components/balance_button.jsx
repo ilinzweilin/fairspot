@@ -1,19 +1,18 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
+import React from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
 
 const styles = theme => ({
-  fab: {
-    position: 'absolute',
-    right: theme.spacing.unit * 3,
-    width: '75px',
-    height: '75px',
-    fontSize: '1rem',
-    cursor: 'default'
+  card: {
+    fontSize: '2rem',
+    cursor: 'default',
+    marginBottom: '1em',
   }
 });
 
-class FloatingActionButtonZoom extends React.Component {
+class BalanceButton extends React.Component {
   state = {
     value: 0,
   };
@@ -23,12 +22,16 @@ class FloatingActionButtonZoom extends React.Component {
   
     return (
       <div className={classes.root}>
-            <Fab className={classes.fab} color='primary'>
-              {balance} ETC
-            </Fab>
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography className={classes.title} color="textSecondary">
+              Balance: { balance} ECT
+            </Typography>
+          </CardContent>
+        </Card>
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(FloatingActionButtonZoom);
+export default withStyles(styles)(BalanceButton)

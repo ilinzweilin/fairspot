@@ -17,7 +17,6 @@ try {
       headers: { 'Content-Type': 'application/json' },
     }
   )} catch(err) {
-    console.log("err occurred", err)
   }
 }
 
@@ -32,7 +31,7 @@ export async function joinTokenNetwork() {
       headers: { 'Content-Type': 'application/json' },
     }
   )
-  console.log('joined nework', res)
+  onsole.log('joined nework', res)
 }
 
 export async function getExistingPartners() {
@@ -56,7 +55,6 @@ export async function reopenPaymentChannel(partnerAddress, tokenAddress) {
       headers: { 'Content-Type': 'application/json' },
     }
   )
-  console.log("payment channel closed", req)
 }
 
 export async function closePaymentChannel(partnerAddress, tokenAddress) {
@@ -69,7 +67,6 @@ export async function closePaymentChannel(partnerAddress, tokenAddress) {
       headers: { 'Content-Type': 'application/json' },
     }
   )
-  console.log("payment channel closed", req)
 }
 
 export async function leaveTokenNetwork(tokenAddress) {
@@ -78,7 +75,6 @@ export async function leaveTokenNetwork(tokenAddress) {
     {
       headers: { 'Content-Type': 'application/json' },
     })
-  console.log("network left", req)
 }
 
 export async function submitPayment(partnerAddress, tokenAddress, amount) {
@@ -90,7 +86,6 @@ export async function submitPayment(partnerAddress, tokenAddress, amount) {
     {
       headers: { 'Content-Type': 'application/json' },
     })
-  console.log("payment sent", req)
 }
 
 export function addPaymentInformation (elements) {

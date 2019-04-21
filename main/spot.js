@@ -1,16 +1,14 @@
 let WiFiControl = require('wifi-control')
 let pcap = require('pcap')
 let { promisify } = require('util')
-let {
-  openPaymentChannel,
-  closePaymentChannel,
-  addPaymentInformation,
-  submitPayment
-} = require('../../src/helpers/payment')
+const { EventEmitter } = require('events')
 
 // --> charge for 100KB
 const chunkSize = 100000,
   chunkPrize = 1
+
+const ssid = "ETHCapeTownWifi"
+const password = "ETHCPTbuidl"
 
 let amountPaidTotal = 0,
   bytesConsumedTotal = 0,
@@ -26,52 +24,47 @@ WiFiControl.init({
   debug: true
 })
 
-async function connectToSpot(ssid, password) {
-  await WiFiControl.connectToAP({
-    ssid, password
-  })
-  resetValues()
+class Spot extends EventEmitter {
+  constructor() {
+    super()
+  }
+
+  startSpotting() {
+    pcap_session.on('packet', async (raw_packet) => {
+      let packet = pcap.decode.packet(raw_packet)
+      tcp_tracker.track_packet(packet)
+      const packetSize = packet.payload.payload.length
+      bytesConsumedTotal += packetSize
+      bytesCurrentChunk += packetSize
+      if (bytesCurrentChunk >= chunkSize) {
+        bytesCurrentChunk -= chunkSize
+        this.emit('PAYMENT_TRIGGERED', 100)
+      }
+    })
+  }
+
+  async findSpots() {
+    const data = await WiFiControl.scanForWiFi()
+    return data.networks
+  }
+
+  resetValues() {
+    amountPaidTotal = 0
+    bytesConsumedTotal = 0
+    bytesCurrentChunk = 0
+  }
+
+  async connectToSpot() {
+    await WiFiControl.connectToAP({
+      ssid, password
+    })
+    this.resetValues()
+    this.startSpotting()
+  }
+
+  async disconnectFromSpot() {
+    await WiFiControl.resetWiFi()
+  }
 }
 
-async function disconnectFromSpot() {
-  await WiFiControl.resetWiFi()
-}
-
-async function findSpots() {
-  const data = await WiFiControl.scanForWiFi()
-  // HACK: turn Wifi access points into spots
-  addPaymentInformation(data.networks)
-  console.log("networks", data.networks)
-  return data.networks
-}
-
-
-function startSpotting() {
-  pcap_session.on('packet', async function (raw_packet) {
-    var packet = pcap.decode.packet(raw_packet)
-    tcp_tracker.track_packet(packet)
-    const packetSize = packet.payload.payload.length
-    bytesConsumedTotal += packetSize
-    bytesCurrentChunk += packetSize
-    if (bytesCurrentChunk >= chunkSize) {
-      console.log(`bytes in current chunk before payment ${bytesCurrentChunk}`)
-      submitPayment()
-      bytesCurrentChunk -= chunkSize
-      console.log(`bytes in current chunk after payment ${bytesCurrentChunk}`)
-      console.log("total consumption", bytesConsumedTotal)
-    }
-  })
-}
-
-function resetValues() {
-  amountPaidTotal = 0
-  bytesConsumedTotal = 0
-  bytesCurrentChunk = 0
-}
-
-module.exports = {
-  connectToSpot,
-  disconnectFromSpot,
-  findSpots,
-  startSpotting
-}
+module.exports = new Spot()

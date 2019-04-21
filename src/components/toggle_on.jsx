@@ -20,19 +20,15 @@ export default class NetworkToggle extends Component {
       handleToggle = (event, hidden) => {
         const { networkId, disconnectFromNetwork, connectToNetwork } = this.props
         if (hidden) {
-          console.log("hidden", networkId)
           connectToNetwork(networkId)
 
         } else {
-
-          console.log("not hidden", networkId)
           disconnectFromNetwork()
         }
         this.setState(state => ({
             hidden,
             open: hidden ? false : state.open,
           }));
-          console.log("toggled!")
       }
 
   render() {

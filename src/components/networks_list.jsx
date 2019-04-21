@@ -11,7 +11,6 @@ export default class NetworksList extends Component {
 
   props = {
       networks: [],
-      partners: [],
       connectedNetwork: undefined,
       connectToNetwork: {},
       disconnectFromNetwork: {},
@@ -26,11 +25,8 @@ export default class NetworksList extends Component {
     const { networks, connectedNetwork, connectToNetwork, disconnectFromNetwork, kBytesConsumed } = this.props
       return (
         <div className="mainContent" >
-          <Typography variant="h6" className="networksListTitle">
-          Spots
-          </Typography>
           <Typography className="paymentInfo">
-          Pay .01 ETC / 100 Kbyte 
+          Pay .001 ETC / 100 Kbyte 
           </Typography>
           <div className="networkList">
             {

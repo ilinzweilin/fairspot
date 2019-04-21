@@ -34,10 +34,10 @@ export default class ChannelButton extends Component {
   render() {
     return(
       <div>
-      <Button variant="contained" color="primary" onClick={this.paymentChannel}>
+      <Button letiant="contained" color="primary" onClick={this.paymentChannel}>
       Open Channel
       </Button>
-      <Button variant="contained" color="primary" onClick={this.sendMoney}>
+      <Button letiant="contained" color="primary" onClick={this.sendMoney}>
       Send Money
       </Button>
       </div>

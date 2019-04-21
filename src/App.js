@@ -5,7 +5,7 @@ import BalanceButton from './components/balance_button'
 import ConnectedSnackBar from './components/connected_snackbar'
 import DisconnectedSnackBar from './components/disconnected_snackbar'
 import Web3 from 'web3'
-import ChannelButton from './components/open_channel';
+
 import {
   openPaymentChannel,
   closePaymentChannel,
@@ -14,14 +14,6 @@ import {
   getExistingPartners,
   leaveTokenNetwork
 } from './helpers/payment'
-
-/*const {
-  connectToSpot,
-  disconnectFromSpot,
-  findSpots,
-  startSpotting
-} = require('./spot')
-*/
 
 const style = {
   margin: 0,
@@ -32,15 +24,14 @@ const style = {
   position: 'fixed',
 }
 
-
 class App extends Component {
 
   state = {
     networks: [],
     partners: {},
     tokenAddress: '0x396764f15ed1467883A9a5B7D42AcFb788CD1826',
-    partnerAddress: '0xd90E2bB3E2351C503C47B55F1ba9E96C1bc64921',
-    pricePerChunk: .01,
+    partnerAddress: '0x5Ed1E563C6917411cB667179764C05112f0DE7B9',
+    pricePerChunk: .001,
     account: undefined,
     connectedNetwork: undefined,
     balance: 0,
@@ -55,6 +46,8 @@ class App extends Component {
   }
 
   async init() {
+    // await window.spot.disconnectFromSpot()
+    window.spot.on('PAYMENT_TRIGGERED', this.payForChunks)
     await this.loadData()
     await this.getTokenBalance()
     // await this.leaveTokenNetwork()
@@ -62,45 +55,33 @@ class App extends Component {
     // await this.getExistingPartners()
   }
 
-  async openPaymentChannel() {
-    try {
-      let res = await openPaymentChannel('0xd90E2bB3E2351C503C47B55F1ba9E96C1bc64921', '0x396764f15ed1467883A9a5B7D42AcFb788CD1826', .001, 100)
-      console.log("opened", res)
-    } catch (err) {
-      console.log(err, "opening failed")
-    }
+    payForChunks = async (size) => {
+    const kBytesConsumed = this.state.kBytesConsumed + size
+    const moneySpent = this.state.moneySpent + this.state.pricePerChunk
+    let balance = this.state.balance - this.state.pricePerChunk
+    balance = balance.toFixed(3)
+    this.setState({ kBytesConsumed, moneySpent, balance })
+    let res = submitPayment(this.state.partnerAddress, this.state.tokenAddress, this.state.pricePerChunk)
   }
 
-  async payForChunks(size) {
-    let res = await submitPayment(this.state.partnerAddress, this.state.tokenAddress, this.state.pricePerChunk)
-    kBytesConsumed += size
-    moneySpent += this.state.pricePerChunk
-    this.setState({ kBytesConsumed, moneySpent })
+    closePaymentChannel = async () => {
+    let res = await closePaymentChannel(this.state.partnerAddress, this.state.tokenAddress)
   }
 
-  async closePaymentChannel() {
-    let res = await closePaymentChannel('0xd90E2bB3E2351C503C47B55F1ba9E96C1bc64921', '0x396764f15ed1467883A9a5B7D42AcFb788CD1826')
-    console.log(res, "closed payment channel")
+  leaveTokenNetwork = async () =>{
+    let res = await leaveTokenNetwork(this.state.tokenAddress)
   }
 
-  async leaveTokenNetwork() {
-    let res = await leaveTokenNetwork('0x396764f15ed1467883A9a5B7D42AcFb788CD1826')
-    console.log(res, "network left")
-  }
-
-  async sendMoney() {
-    let res = await submitPayment('0xd90E2bB3E2351C503C47B55F1ba9E96C1bc64921', '0x396764f15ed1467883A9a5B7D42AcFb788CD1826', 1)
-    console.log(res, "money sent")
+    sendMoney = async () => {
+    let res = await submitPayment(this.state.partnerAddress, this.state.tokenAddress, .001)
   }
   
-  async joinTokenNetwork() {
+    joinTokenNetwork = async () => {
     let res = await joinTokenNetwork()
-    console.log("token network joined", res)
   }
 
-  async getExistingPartners() {
+    getExistingPartners = async () => {
     const partners = await getExistingPartners()
-    console.log("here are your partners", partners)
   }
 
   getTokenBalance = async () => {
@@ -118,32 +99,8 @@ class App extends Component {
     try {
       networks = await window.spot.findSpots()    
     } catch (error) {
-      console.log('error failed to load networks', error)
     }
     this.setState({ networks })
-    /*
-    const geth = await window.grid.getClient('geth')
-    if (geth) {
-      try {
-        const accounts = await geth.sendRpc('eth_accounts')
-        }catch (err) {
-          console.log("error", err)
-        }
-    }
-    */
-      /*raiden public key
-      const raidenAccount = account.find(account => account === )
-      if (accounts) {
-        this.setState({
-          account: account
-        })
-      }
-    } catch (err) {
-      this.setState({
-        error: err.message
-      })
-    }
-    */
   }
 
   loadNetworks = () =>  {
@@ -155,13 +112,14 @@ class App extends Component {
   }
 
 connectToNetwork = async (networkId) => {
-  await this.openPaymentChannel()
   this.setState({ 
     connectedNetwork : networkId,
     connectedSnackBarOpen : true,
     disconnectedSnackBarOpen : false,
   })
   this.hideConnectedSnackBar()
+  window.spot.connectToSpot()
+  openPaymentChannel(this.state.partnerAddress, this.state.tokenAddress, 20, 500)
 }
 
 disconnectFromNetwork = async () => {
@@ -192,12 +150,11 @@ hideDisconnectedSnackBar = () => {
     return (
       <div className="App">
         <header className="App-header">
+        <BalanceButton balance = { this.state.balance}/>
         { this.loadNetworks() }
         <ConnectedSnackBar open = {this.state.connectedSnackBarOpen}/>
         <DisconnectedSnackBar open = {this.state.disconnectedSnackBarOpen}/>
         </header>
-        <BalanceButton balance = { this.state.balance}/>
-  
       </div>
     )
   }
